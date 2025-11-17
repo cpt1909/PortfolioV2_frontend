@@ -30,7 +30,8 @@ export default function Cora() {
         prompt: prompt,
     }
 
-    const res = await fetch(coraApi, {
+    try{
+      const res = await fetch(coraApi, {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -38,9 +39,12 @@ export default function Cora() {
         body: JSON.stringify(body),
     });
 
-    const data = (await res.json()) as CoraResponse;
-    return data.reply;
-    }
+      const data = (await res.json()) as CoraResponse;
+      return data.reply;
+    }catch(e){
+      return "Connection Failed !!"
+    }}
+    
 
 
   const handleSend = async () => {
@@ -50,7 +54,7 @@ export default function Cora() {
 
     const userChat: Chat = {
       chatId: id,
-      userId: "user",
+      userId: "You",
       text: text,
     }
     id++;
@@ -61,7 +65,7 @@ export default function Cora() {
     const reply: string = await askCora(text)
     const coraChat: Chat = {
       chatId: id,
-      userId: "cora",
+      userId: "Cora",
       text: reply,
     }
     id++;
