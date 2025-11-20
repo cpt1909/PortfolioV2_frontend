@@ -1,10 +1,26 @@
 'use client';
 
-import { useState } from "react";
-import Cora from "./components/cora";
+import { Skill, SkillResponse } from "@/app/types";
+import { useState, useEffect } from "react";
+import Cora from "@/app/components/cora";
 import "./globals.css";
 
 export default function Home() {
+    
+    const [skills, setSkills] = useState<Skill[]>([]);
+
+    async function fetchData(): Promise<void>{
+        const res = await fetch("/api/data", {
+            cache: "no-store",
+        });
+        const data = (await res.json()) as SkillResponse;
+        setSkills(data.skills);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
   return (
     <center>
         <div className="container pl-10 pr-10 min-h-screen max-w-7xl">
@@ -35,23 +51,24 @@ export default function Home() {
                 <p className="text-justify text-md sm:text-xl pb-5">A Software Development Engineer specializing in Artificial Intelligence and Full-Stack solutions. Experienced in delivering cloud-ready, scalable systems and high-performance applications</p>
             </div>
             <div className="mobile-navbar h-auto flex justify-evenly items-center gap-3 md:hidden">
-                <div className="w-30 h-12 flex justify-center items-center border-1 rounded-2xl">Projects</div>
-                <div className="w-30 h-12 flex justify-center items-center border-1 rounded-2xl">Get in Touch</div>
+                <div className="pl-5 pr-5 w-auto h-12 flex justify-center items-center border rounded-2xl">Scroll to Projects</div>
             </div>
 
-            <h1 className="font-bold text-xl sm:text-2xl md:text-left underline pt-6 pb-10">Skills Unlocked</h1>
-            <div className="skills flex flex-wrap justify-center md:justify-start gap-x-10 gap-y-10">
-                <div className="skill-object w-65 h-auto min-h-30 border rounded-3xl p-5">
-                </div>
+            <div className="skills pt-15 flex flex-wrap justify-center md:justify-start gap-x-10 gap-y-10">
+                {
+                    skills && (
+                        skills.map((skillItem, index) => (
+                            <div key={index} className="skill-object w-65 h-auto min-h-30 border border-gray-700 rounded-3xl p-5 box-shadow">
+                                <p className="text-left font-bold pb-5">{skillItem.domain}</p>
+                                <p className="text-left">{skillItem.items.join(" • ")}</p>
+                            </div>
+                        ))
+                    )
+                }
+            </div>
 
-                <div className="skill-object w-65 h-auto min-h-30 border rounded-3xl p-5">
-                </div>
-
-                <div className="skill-object w-65 h-auto min-h-30 border rounded-3xl p-5">
-                </div>
-
-                <div className="skill-object w-65 h-auto min-h-30 border rounded-3xl p-5">
-                </div>
+            <h1 className="text-left pt-12 font-medium text-xl">Projects</h1>
+            <div className="projects pt-8 flex flex-wrap justify-center md:justify-start gap-x-10 gap-y-10">
             </div>
         {/* <Cora/> */}
         </div>

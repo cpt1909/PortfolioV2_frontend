@@ -1,28 +1,13 @@
 import { useState } from "react";
+import { Chat, CoraRequest, CoraResponse } from "@/app/types";
 
 export default function Cora() {
 
-  let id: number = 1;
-
-  type Chat = {
-    chatId: number,
-    userId: string,
-    text: string,
-  }
-
-  const coraApi = "http://127.0.0.1:8000/cora";
+  const coraApi: string = process.env.CORA_API_URL ?? "";
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
   const [text, setText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [enableChatbox, setEnableChatbox] = useState<boolean>(true);
-  
-  type CoraRequest = {
-    prompt: string,
-}
-
-  type CoraResponse = {
-      reply: string
-  }
 
   const askCora = async (prompt: string) => {
 
@@ -46,29 +31,24 @@ export default function Cora() {
     }}
     
 
-
   const handleSend = async () => {
     if (!text.trim()) return;
 
     setEnableChatbox(false);
 
     const userChat: Chat = {
-      chatId: id,
       userId: "You",
       text: text,
     }
-    id++;
     setChatHistory(prev => [...prev, userChat]);
     setText("");
     setLoading(true);
 
     const reply: string = await askCora(text)
     const coraChat: Chat = {
-      chatId: id,
       userId: "Cora",
       text: reply,
     }
-    id++;
     setChatHistory(prev => [...prev, coraChat]);
     setLoading(false);
     setEnableChatbox(true);
