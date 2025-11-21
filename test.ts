@@ -1,29 +1,17 @@
-type CoraRequest = {
-    prompt: string,
-    convo_context: string[]
-}
-
-type CoraResponse = {
-    reply: string
-}
-
-const askCora = async (prompt: string, convo_context: string[]) => {
-    const body: CoraRequest = {
-        prompt,
-        convo_context,
-    }
-
-    const res = await fetch("http://127.0.0.1:8000/cora", {
-        method: "POST",
-        headers: {
+export const res = await fetch("http://127.0.0.1:8000/cora",{
+    method: "POST",
+    headers: {
+        "accept": "application/json",
         "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-    });
+        "authorization": "Bearer >jkLoV)~hL338*%RS/2m[Tsd!TaFXE"
+    },
+    body: JSON.stringify({
+        prompt: "hello. who are you?"
+    })
+})
 
-    const data = (await res.json()) as CoraResponse;
+const header = res.headers;
+const Authorization = header.get("authorization");
 
-    console.log(data.reply);
-    }
-
-askCora("who is Thaarakenth?", [])
+console.log(res)
+console.log(Authorization)

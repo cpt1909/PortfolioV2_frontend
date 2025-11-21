@@ -3,34 +3,29 @@ import { Chat, CoraRequest, CoraResponse } from "@/app/types";
 
 export default function Cora() {
 
-  const coraApi: string = process.env.CORA_API_URL ?? "";
-  const [chatHistory, setChatHistory] = useState<Chat[]>([]);
-  const [text, setText] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [enableChatbox, setEnableChatbox] = useState<boolean>(true);
+    const [chatHistory, setChatHistory] = useState<Chat[]>([]);
+    const [text, setText] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [enableChatbox, setEnableChatbox] = useState<boolean>(true);
 
-  const askCora = async (prompt: string) => {
+    async function askCora(prompt: string){
+        
+        const body: CoraRequest = {
+            prompt: prompt,
+        };
 
-    const body: CoraRequest = {
-        prompt: prompt,
-    }
-
-    try{
-      const res = await fetch(coraApi, {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-    });
-
-      const data = (await res.json()) as CoraResponse;
-      return data.reply;
-    }catch(e){
-      return "Connection Failed !!"
-    }}
+        const res = await fetch("/api/cora", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // "authorization": process.env.AUTH_TOKEN ?? ""
+            },
+            body: JSON.stringify(body),
+            });
+    const data = (await res.json());
+    return data.reply;
+  }
     
-
   const handleSend = async () => {
     if (!text.trim()) return;
 
@@ -44,10 +39,11 @@ export default function Cora() {
     setText("");
     setLoading(true);
 
-    const reply: string = await askCora(text)
+    const coraReply = await askCora(text);
+    
     const coraChat: Chat = {
       userId: "Cora",
-      text: reply,
+      text: coraReply,
     }
     setChatHistory(prev => [...prev, coraChat]);
     setLoading(false);

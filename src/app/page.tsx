@@ -70,7 +70,7 @@ export default function Home() {
             <h1 className="text-left pt-12 font-medium text-xl">Projects</h1>
             <div className="projects pt-8 flex flex-wrap justify-center md:justify-start gap-x-10 gap-y-10">
             </div>
-        {/* <Cora/> */}
+        <Cora/>
         </div>
     </center>
   );

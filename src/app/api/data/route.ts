@@ -1,4 +1,3 @@
-import Error from "next/error";
 import clientPromise from "../mongodb_connection";
 import { Skill } from "@/app/types";
 
@@ -17,7 +16,9 @@ export async function GET(): Promise<Response> {
       skills: skills,
     }), {
       status: 200,
-      headers: { "Content-Type": "application/json" }
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store" }
     });
   }catch(err){
     return new Response(
