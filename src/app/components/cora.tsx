@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Chat, CoraRequest, CoraResponse } from "@/app/types";
+import { Chat, CoraRequest } from "@/app/types";
 
 export default function Cora() {
 
@@ -18,7 +18,6 @@ export default function Cora() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // "authorization": process.env.AUTH_TOKEN ?? ""
             },
             body: JSON.stringify(body),
             });

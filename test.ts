@@ -1,4 +1,4 @@
-export const res = await fetch("http://127.0.0.1:8000/cora",{
+export const res = await fetch("https://portfoliov2-backend-gvmn.onrender.com/cora",{
     method: "POST",
     headers: {
         "accept": "application/json",
@@ -11,7 +11,5 @@ export const res = await fetch("http://127.0.0.1:8000/cora",{
 })
 
 const header = res.headers;
-const Authorization = header.get("authorization");
 
-console.log(res)
-console.log(Authorization)
+console.log(await res.json())
